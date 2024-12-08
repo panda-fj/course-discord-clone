@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Open_Sans } from 'next/font/google';
 import "./globals.css";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
+
 
 const openSans = Open_Sans({
     weight: "400",
@@ -23,11 +26,18 @@ export default function RootLayout({
         <ClerkProvider
             afterSignOutUrl="/"
         >
-            <html lang="ja-JP">
+            <html lang="ja-JP" suppressHydrationWarning>
                 <body
-                    className={`${openSans.variable} font-open_sans antialiased`}
+                    className={cn(openSans.variable, "font-open_sans bg-white dark:bg-[#313338] antialiased")}
                 >
-                    {children}
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                    </ThemeProvider>
                 </body>
             </html>
         </ClerkProvider>
